@@ -1,0 +1,301 @@
+/* ======= Light theme tokens ======= */
+:root{
+  --bg:#f7e9d0;        /* your color */
+  --panel:#fff4df;     /* panels */
+  --card:#fff7e8;      /* cards */
+  --border:#e5d6bb;
+  --text:#2a2118;      /* dark brown text */
+  --muted:#7d6d5a;
+  --accent:#d97706;    /* warm amber */
+  --accent-2:#2ea44f;  /* green highlight */
+  --danger:#d94848;
+  --radius:14px;
+  --shadow:0 8px 24px rgba(0,0,0,.08);
+}
+
+/* Base */
+*{ box-sizing:border-box }
+html, body, #root{ height:100% }
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font:500 16px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial;
+}
+
+/* Layout */
+.container{ max-width:1120px; margin:0 auto; padding:24px }
+.app-title{ margin:0 0 16px; font-size:28px; font-weight:800; letter-spacing:.3px }
+
+/* GRID with areas: "timer pet" / "tasks tasks" */
+.layout{ display:grid; gap:16px }
+.layout > .card{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px }
+@media (min-width:900px){
+  .layout{
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "timer pet"
+      "tasks tasks";
+  }
+}
+@media (max-width:899px){
+  .layout{ grid-template-columns: 1fr; grid-template-areas: "timer" "pet" "tasks"; }
+}
+.area-timer{ grid-area: timer }
+.area-pet{ grid-area: pet }
+.area-tasks{ grid-area: tasks }
+
+/* Optional: faint split lines like your sketch */
+.layout.split-lines{
+  position:relative;
+  background:
+    linear-gradient(to right, var(--border) 1px, transparent 1px) center/1px 100%,
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px) center/100% 1px;
+  border-radius:var(--radius);
+}
+
+/* Reusable bits */
+.pill{ display:inline-block; padding:3px 8px; border-radius:999px; font-size:12px;
+       background:var(--panel); border:1px solid var(--border); color:var(--muted) }
+
+.btn{
+  appearance:none; border:1px solid var(--border); background:var(--panel);
+  color:var(--text); border-radius:10px; padding:8px 12px; cursor:pointer;
+  transition:transform .05s ease, filter .2s ease, background .2s ease, border-color .2s ease;
+}
+.btn:hover{ transform:translateY(-1px); border-color:#d7c59f }
+.btn:disabled{ opacity:.6; cursor:not-allowed; transform:none }
+.btn--primary{ background: linear-gradient(#f6c86e,#e8a941); border-color:#dfa137 }
+.btn--primary:hover{ filter:brightness(1.05) }
+.btn--success{ background: linear-gradient(#43c777,#20945a); border-color:#1c7d4c; color:white }
+.btn--danger{ background: linear-gradient(#ff7d7d,#d94848); border-color:#c63e3e; color:white }
+.btn--ghost{ background:transparent }
+
+/* Inputs */
+.input{
+  width:100%; padding:9px 12px; border-radius:10px;
+  background:var(--panel); border:1px solid var(--border); color:var(--text)
+}
+.input::placeholder{ color:#a39179 }
+
+/* Pet cards */
+.list{ list-style:none; margin:0; padding:0 }
+.pet-card{
+  display:flex; flex-direction:column; gap:8px;
+  background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:12px;
+}
+.pet-card.is-active{ outline:3px solid var(--accent-2); outline-offset:0 }
+.pet-title{ font-weight:700 }
+.pet-stage{ color:var(--muted); font-size:13px }
+.pet-img{ width:110px; height:110px; object-fit:contain; background:transparent; border-radius:10px; border:1px solid var(--border) }
+
+/* Timer */
+.timer .modebar{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px }
+.timer .time{
+  font-size:40px; font-variant-numeric: tabular-nums;
+  padding:8px 12px; border:1px solid var(--border); border-radius:12px; width:max-content;
+  background:white;
+}
+
+/* Rows (tasks) */
+.row{ display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--border) }
+.subtle{ color:var(--muted); font-size:13px }
+
+/* Pet panel layout (sidebar + main) */
+.pet-panel{
+  display:grid; gap:12px;
+  grid-template-columns: 230px 1fr;
+}
+@media (max-width: 900px){
+  .pet-panel{ grid-template-columns: 1fr; }
+}
+
+.pet-sidebar{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  max-height: 420px;
+  overflow:auto;
+}
+
+/* Thumbnails in sidebar */
+.pet-thumb{
+  display:flex; align-items:center; gap:10px;
+  padding:8px; border-radius:10px; cursor:pointer;
+  border:1px solid var(--border); background: var(--card);
+  margin-bottom:8px;
+  transition: transform .05s ease, border-color .2s ease, background .2s ease;
+}
+.pet-thumb:hover{ transform: translateY(-1px); border-color:#d7c59f }
+.pet-thumb.is-active{
+  outline: 3px solid var(--accent-2); outline-offset:0;
+  cursor:default;
+}
+.pet-thumb-img{
+  width:48px; height:48px; object-fit:contain; background:transparent; border-radius:8px; border:1px solid var(--border);
+}
+.pet-thumb-meta{ display:flex; flex-direction:column; line-height:1.1 }
+.pet-thumb-name{ font-weight:700 }
+.pet-thumb-stage{ font-size:12px; color: var(--muted) }
+
+.pet-main{ /* just spacing holder for the big card */ }
+/* Show only 3 thumbnails; scroll if more */
+.pet-list-scroll{
+  max-height: 240px;      /* ~3 rows (tweak if your rows are taller/shorter) */
+  overflow-y: auto;
+  padding-right: 4px;     /* room for scrollbar */
+}
+
+/* Ensure consistent row height so 3 fit nicely */
+.pet-thumb{ min-height: 64px; }
+/* Horizontal scroller strip */
+.pet-strip{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding-bottom:6px;
+  scrollbar-width: thin;
+}
+.pet-strip::-webkit-scrollbar{ height:8px }
+.pet-strip::-webkit-scrollbar-thumb{
+  background: var(--border);
+  border-radius: 999px;
+}
+
+/* Compact chips for pets/eggs */
+.pet-chip{
+  flex: 0 0 auto;
+  width: 110px;               /* small, consistent width */
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  transition: transform .05s ease, border-color .2s ease, background .2s ease;
+}
+.pet-chip:hover{ transform: translateY(-1px); border-color:#d7c59f }
+.pet-chip.is-active{
+  outline-offset: 0;
+  cursor: default;
+}
+
+.pet-chip-img{
+  width: 100px;                /* smaller thumbnails */
+  height: 100px;
+  object-fit: contain;
+  background: transparent;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.pet-chip-name{
+  font-weight: 700;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  text-align: center;
+}
+.pet-chip-stage{
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Collapsible drawer */
+.collapser{
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .28s ease;
+  margin-top: 10px;
+  border-radius: var(--radius);
+}
+.collapser.is-open{ max-height: 280px; }        /* adjust if you want taller */
+.collapser-inner{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px;
+}
+
+/* Collection grid: small thumbs, horizontal scroll on overflow */
+.collection-grid{
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+}
+.collection-grid::-webkit-scrollbar{ height: 8px }
+.collection-grid::-webkit-scrollbar-thumb{
+  background: var(--border);
+  border-radius: 999px;
+}
+
+.collection-item{
+  flex: 0 0 auto;
+  width: 96px;              /* compact card */
+  text-align: center;
+}
+.collection-thumb{
+  width: 100px;              /* smaller than before */
+  height: 100px;
+  object-fit: contain;
+  background: transparent;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin: 0 auto;
+}
+.collection-name{
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Center the Pomodoro timer in its card */
+.area-timer .timer{
+  align-items: center;      /* horizontal center for all timer content */
+  text-align: center;
+}
+.area-timer .timer .modebar{
+  justify-content: center;  /* center the mode buttons row */
+}
+.timer .time{
+  margin: 6px auto;         /* center the clock block */
+}
+.timer-actions{
+  display: flex;
+  justify-content: center;  /* center the action buttons */
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;          /* keeps layout tidy on small screens */
+}
+
+
+/* shrink + center the active pet card */
+.area-pet .pet-main{
+  display:flex;
+  justify-content:center;    /* center the smaller card */
+}
+
+.area-pet .pet-main .pet-title{ font-size: 18px; }
+.area-pet .pet-main .pet-stage{ font-size: 12px; }
+
+/* smaller image so the card isn't tall */
+.area-pet .pet-main .pet-img{
+  width: 96px;
+  height: 96px;
+}
+
+/* slightly smaller controls inside the card */
+.area-pet .pet-main .btn{ padding: 6px 10px; }
+.area-pet .pet-main .pill{ font-size: 11px; padding: 2px 8px; }
+
+/* thinner active outline so it looks lighter */
+.pet-card.is-active{ outline: 2px solid var(--accent-2); }
