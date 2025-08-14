@@ -2,7 +2,7 @@
 
 A cozy Pomodoro + pet-collection app. Finish focus sessions to earn points, crack & hatch eggs, evolve pets, and keep a simple task list—wrapped in a warm, minimal UI.
 
-![Hero](frontend/public/screenshots/hero.png)
+![Hero](frontend/public/screenshots/hero.jpg)
 
 ---
 
