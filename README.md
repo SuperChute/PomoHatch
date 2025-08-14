@@ -28,7 +28,6 @@ A cozy Pomodoro + pet-collection app. Finish focus sessions to earn points, crac
 - **Backend**: Django, Django REST Framework, django-cors-headers, Pillow  
 - **Frontend**: React, Axios, plain CSS (theme tokens)  
 - **Dev media**: served from `/media/` in Django (DEBUG)  
-- **Production media** (optional): Cloudinary/S3
 
 ---
 
