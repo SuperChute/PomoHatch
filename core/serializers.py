@@ -4,7 +4,7 @@ from .models import PetSpecies, EggPet, PomodoroProgress, Task
 class PetSpeciesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PetSpecies
-        fields = '__all__' 
+        fields = ['id', 'name', 'image', 'evolved_image'] 
 
 class EggPetSerializer(serializers.ModelSerializer):
     # GET: Use this for nested species data

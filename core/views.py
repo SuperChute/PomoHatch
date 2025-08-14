@@ -147,6 +147,7 @@ def full_reset(request):
     progress = PomodoroProgress.objects.first()
     if progress:
         progress.pomodoro_points = 0
+        progress.pomodoros_completed = 0
         progress.save()
 
     return Response({'message': 'System reset successful.'}, status=status.HTTP_200_OK)
@@ -203,17 +204,38 @@ def collection_summary(request):
         .distinct()
     )
 
+    # species that the player has at EVOLVED stage
+    evolved_species_ids = set(
+        EggPet.objects
+        .filter(stage=EggPet.Stage.EVOLVED)
+        .exclude(species__isnull=True)
+        .values_list('species_id', flat=True)
+        .distinct()
+    )
+
     collected_qs = PetSpecies.objects.filter(id__in=owned_species_ids)
     collected_count = collected_qs.count()
     has_all = total_species > 0 and collected_count >= total_species
 
-    data = {
+    collected_species = []
+    for sp in collected_qs:
+        is_evolved = sp.id in evolved_species_ids
+        display = sp.evolved_image.url if (is_evolved and sp.evolved_image) else sp.image.url
+        collected_species.append({
+            "id": sp.id,
+            "name": sp.name,
+            "image": sp.image.url,  # base (keep for fallback/debug)
+            "evolved_image": sp.evolved_image.url if sp.evolved_image else None,
+            "is_evolved": is_evolved,
+            "display_image": display,   # 👈 what the UI should show
+        })
+
+    return Response({
         "total_species": total_species,
         "collected_count": collected_count,
         "has_all": has_all,
-        "collected_species": PetSpeciesSerializer(collected_qs, many=True).data,
-    }
-    return Response(data)
+        "collected_species": collected_species,
+    })
 
 @api_view(['PATCH'])
 def rename_pet(request, pet_id):

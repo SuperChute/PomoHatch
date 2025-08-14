@@ -11,12 +11,13 @@ class Task(models.Model):
     title = models.CharField(max_length=255)
     completed = models.BooleanField(default=False)
 
-class PetSpecies(models.Model): 
+class PetSpecies(models.Model):
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to='images/')
-
+    evolved_image = models.ImageField(upload_to='images/', null=True, blank=True) 
     class Meta:
         verbose_name_plural = "Pet species"
+
 
 class EggPet(models.Model): 
     class Stage(models.TextChoices): 
