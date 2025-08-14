@@ -208,7 +208,7 @@ export default function PomodoroTimer({ onAwardedPoint }) {
           <button className="btn" onClick={pause}>Pause</button>
         )}
         <button className="btn btn--ghost" onClick={reset}>Reset</button>
-        <button className="btn btn--ghost" onClick={completeNow}>(Dev) Complete Now</button>
+        {/* <button className="btn btn--ghost" onClick={completeNow}>(Dev) Complete Now</button> */}
       </div>
 
       <div style={{ marginTop: 6, color: "#666", fontSize: 12 }}>
